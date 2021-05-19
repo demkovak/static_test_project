@@ -1,0 +1,20 @@
+enclave {
+	include "../Enclave/Vault.h"
+	trusted {
+		public void e_create_vault([in, string] char *master_password, [in] const int *is_password, [out] int *return_value);
+		public void e_unlock_vault([in, string] char *master_password, [out] int *return_value);
+		public void e_is_password([out] int *is_password, [out] int *return_value);
+		public void e_verify_master_password([in, string] char *master_password, [out] int *return_value);
+		public void e_add_service([in, string] char *service_name, [in, string] char *username, [in, string] char *password, [out] int *return_value);
+		public void e_get_services_names([out, size=len] char *services_names, size_t len);
+		public void e_get_credentials([in]int *index, [out, size=item_size] item_t *item, size_t item_size, [out] int *return_value);
+		public void e_remove_item([in]int *index, [out] int *return_value);
+		public void e_change_master_password([in, string] char *master_password_new, [out] int *return_value);
+		public void e_get_count_items([out] size_t *count_items, [out] int *return_value);
+		public void e_clear_enclave_memory([out] int *return_value);
+	};
+	untrusted {
+		void o_save_vault([in, size=sealed_size] const unsigned char* sealed_data, size_t sealed_size, [in] int *o_return_value);
+	    void o_read_vault([out] unsigned char** sealed_data, [out] size_t* len, [in] int *o_return_value);
+	};	
+};
